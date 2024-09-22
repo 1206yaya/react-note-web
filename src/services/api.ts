@@ -1,6 +1,14 @@
 import axios from "axios";
 import { Note } from "../types/Note";
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:8080";
+const getApiUrl = () => {
+  const currentUrl = window.location.origin;
+  if (currentUrl.includes("localhost") || currentUrl.includes("127.0.0.1")) {
+    return "http://localhost:8080"; // Local API URL
+  }
+  return process.env.REACT_APP_API_URL;
+};
+const API_URL = getApiUrl();
+
 export const getNotes = async (): Promise<Note[]> => {
   const response = await axios.get(`${API_URL}/notes`);
   return response.data;
